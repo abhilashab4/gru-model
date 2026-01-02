@@ -110,12 +110,10 @@ if st.button("Run Prediction"):
         if scaler is None:
             st.stop()
 
-        # Preprocess test data
         df_test = preprocess_test_file(test_file, scaler)
         true_rul = pd.read_csv(rul_file, header=None).values.flatten()
         true_rul = np.minimum(true_rul, 125)
 
-        # Create sequences
         X_test = create_test_sequences(df_test, sequence_length=50)
 
         st.info(f"Loading model for {domain}...")
@@ -123,10 +121,8 @@ if st.button("Run Prediction"):
         if model is None:
             st.stop()
 
-        # Predict
         preds = predict_rul(X_test, model)
 
-        # Alerts
         alerts = [classify_alert(p) for p in preds]
 
         result_df = pd.DataFrame({
